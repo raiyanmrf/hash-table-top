@@ -51,6 +51,26 @@ const HashMap = () => {
     }
     return undefined;
   }
+  function remove(key) {
+    const index = getIndex(key);
+
+    if (index < 0 || index >= table.length) {
+      throw new Error("Trying to access index out of bounds");
+    }
+
+    if (table[index]) {
+      const bucket = table[index].filter((item) => item[0] !== key);
+      if (bucket.length !== table[index].length) {
+        table[index] = bucket;
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function print() {
+    console.log(table);
+  }
   function has(key) {
     const index = getIndex(key);
 
@@ -75,7 +95,7 @@ const HashMap = () => {
     return hashCode;
   }
 
-  return { set, get, has };
+  return { set, get, has, remove, print };
 };
 
 const hashTable = HashMap();
@@ -87,3 +107,6 @@ console.log(hashTable.get("mong"));
 console.log(hashTable.get("dong"));
 console.log(hashTable.has("pong"));
 console.log(hashTable.has("mong"));
+console.log(hashTable.remove("mong"));
+console.log(hashTable.remove("pong"));
+hashTable.print();
