@@ -51,6 +51,18 @@ const HashMap = () => {
     }
     return undefined;
   }
+  function has(key) {
+    const index = getIndex(key);
+
+    if (table[index]) {
+      const bucket = table[index];
+      for (let i = 0; i < bucket.length; i++) {
+        const itemKey = bucket[i][0];
+        if (itemKey === key) return true;
+      }
+    }
+    return false;
+  }
 
   function hash(key) {
     let hashCode = 0;
@@ -63,7 +75,7 @@ const HashMap = () => {
     return hashCode;
   }
 
-  return { set, get };
+  return { set, get, has };
 };
 
 const hashTable = HashMap();
@@ -73,3 +85,5 @@ console.log(hashTable.set("sita", 50));
 console.log(hashTable.set("mong", 50));
 console.log(hashTable.get("mong"));
 console.log(hashTable.get("dong"));
+console.log(hashTable.has("pong"));
+console.log(hashTable.has("mong"));
