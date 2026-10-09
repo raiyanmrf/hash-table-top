@@ -42,12 +42,14 @@ const HashMap = () => {
       throw new Error("Trying to access index out of bounds");
     }
 
-    let updatedBucket;
-
     if (table[index]) {
+      const bucket = table[index];
+      for (let i = 0; i < bucket.length; i++) {
+        const itemKey = bucket[i][0];
+        if (itemKey === key) return bucket[i][1];
+      }
     }
-
-    return table;
+    return undefined;
   }
 
   function hash(key) {
@@ -61,7 +63,7 @@ const HashMap = () => {
     return hashCode;
   }
 
-  return { set };
+  return { set, get };
 };
 
 const hashTable = HashMap();
@@ -69,3 +71,5 @@ console.log(hashTable.set("rama", 29));
 console.log(hashTable.set("sita", 29));
 console.log(hashTable.set("sita", 50));
 console.log(hashTable.set("mong", 50));
+console.log(hashTable.get("mong"));
+console.log(hashTable.get("dong"));
