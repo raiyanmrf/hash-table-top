@@ -1,15 +1,32 @@
-// {[[firstkey, firstvalue], [secondkey,secondvalue]], ...}
-
 const HashMap = () => {
   const loadFactor = 0.75;
-  const capacity = 0;
-  const table = new Array(16);
+  let table = new Array(16);
+  let capacity = Math.floor(loadFactor * table.length);
 
   function getIndex(key) {
-    return hash(key) % table.length;
+    let i = hash(key) % table.length;
+    // console.log(`${hash(key)} % ${table.length} = ${i}`);
+    return i;
   }
 
   function set(key, value) {
+    // capacity check
+    const len = length();
+    // console.log("len", len);
+    // console.log("capacity", capacity);
+    if (len >= capacity) {
+      const oldTable = table;
+      table = new Array(len * 2);
+      oldTable.forEach((bucket) => {
+        if (bucket && bucket.length > 0) {
+          let i = getIndex(bucket[0][0]);
+          table[i] = [...bucket];
+        }
+      });
+
+      capacity = Math.floor(loadFactor * (table.length * 2));
+    }
+
     const index = getIndex(key);
 
     if (index < 0 || index >= table.length) {
@@ -131,22 +148,71 @@ const HashMap = () => {
     return hashCode;
   }
 
-  return { set, get, has, remove, print, length, keys, values, entries };
+  function clear() {
+    table = new Array(16);
+    capacity = loadFactor * table.length;
+    // console.log("capacity", capacity);
+  }
+
+  return { clear, set, get, has, remove, print, length, keys, values, entries };
 };
 
-const hashTable = HashMap();
-console.log(hashTable.set("rama", 29));
-console.log(hashTable.set("sita", 29));
-console.log(hashTable.set("sita", 50));
-console.log(hashTable.set("mong", 50));
-console.log(hashTable.get("mong"));
-console.log(hashTable.get("dong"));
-console.log(hashTable.has("pong"));
-console.log(hashTable.has("mong"));
-console.log(hashTable.remove("mong"));
-console.log(hashTable.remove("pong"));
-hashTable.print();
-console.log(hashTable.length());
-console.log(hashTable.keys());
-console.log(hashTable.values());
-console.log(hashTable.entries());
+const test = HashMap(); // or HashMap() if using a factory
+
+test.set("apple", "red");
+test.set("banana", "yellow");
+test.set("carrot", "orange");
+test.set("dog", "brown");
+test.set("elephant", "gray");
+test.set("frog", "green");
+test.set("grape", "purple");
+test.set("hat", "black");
+test.set("ice cream", "white");
+test.set("jacket", "blue");
+test.set("kite", "pink");
+test.set("lion", "golden");
+
+test.print();
+console.log(test.length());
+test.set("kite", "pinkish");
+test.set("lion", "goldenish");
+
+test.print();
+console.log(test.length());
+
+test.set("moon", "silver");
+
+test.print();
+console.log(test.length());
+
+test.set("gorilla", "silver");
+test.set("tapir", "gray");
+
+test.print();
+console.log(test.length());
+
+console.log(test.get("kite"));
+console.log(test.get("lion"));
+console.log(test.get("fake"));
+
+console.log(test.has("kite"));
+console.log(test.has("lion"));
+console.log(test.has("fake"));
+
+console.log(test.has("kite"));
+console.log(test.has("lion"));
+console.log(test.has("fake"));
+
+console.log(test.keys());
+console.log(test.values());
+
+console.log(test.remove("kite"));
+console.log(test.remove("fake"));
+
+test.print();
+console.log(test.length());
+
+console.log(test.clear());
+
+test.print();
+console.log(test.length());
