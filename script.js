@@ -70,6 +70,28 @@ const HashMap = () => {
   function length() {
     return table.reduce((sum, item) => sum + item.length, 0);
   }
+  function keys() {
+    let keys = [];
+    table.forEach((bucket) => {
+      if (bucket)
+        keys = [
+          ...keys,
+          ...bucket.reduce((sum, item) => [...sum, item[0]], []),
+        ];
+    });
+    return keys;
+  }
+  function values() {
+    let values = [];
+    table.forEach((bucket) => {
+      if (bucket)
+        values = [
+          ...values,
+          ...bucket.reduce((sum, item) => [...sum, item[1]], []),
+        ];
+    });
+    return values;
+  }
 
   function print() {
     console.log(table);
@@ -98,7 +120,7 @@ const HashMap = () => {
     return hashCode;
   }
 
-  return { set, get, has, remove, print, length };
+  return { set, get, has, remove, print, length, keys, values };
 };
 
 const hashTable = HashMap();
@@ -114,3 +136,5 @@ console.log(hashTable.has("mong"));
 // console.log(hashTable.remove("pong"));
 hashTable.print();
 console.log(hashTable.length());
+console.log(hashTable.keys());
+console.log(hashTable.values());
