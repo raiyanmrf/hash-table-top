@@ -67,6 +67,9 @@ const HashMap = () => {
     }
     return false;
   }
+  function length() {
+    return table.reduce((sum, item) => sum + item.length, 0);
+  }
 
   function print() {
     console.log(table);
@@ -95,7 +98,7 @@ const HashMap = () => {
     return hashCode;
   }
 
-  return { set, get, has, remove, print };
+  return { set, get, has, remove, print, length };
 };
 
 const hashTable = HashMap();
@@ -107,6 +110,7 @@ console.log(hashTable.get("mong"));
 console.log(hashTable.get("dong"));
 console.log(hashTable.has("pong"));
 console.log(hashTable.has("mong"));
-console.log(hashTable.remove("mong"));
-console.log(hashTable.remove("pong"));
+// console.log(hashTable.remove("mong"));
+// console.log(hashTable.remove("pong"));
 hashTable.print();
+console.log(hashTable.length());
